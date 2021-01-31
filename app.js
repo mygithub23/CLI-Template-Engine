@@ -1,7 +1,7 @@
 log = console.log;
 
 const fs = require('fs');
-const { writeFile, fstat } = require("fs");
+const { writeFile } = require("fs");
 const path = require("path");
 
 const inquirer = require("inquirer");
@@ -15,9 +15,9 @@ const figlet = require("figlet");
 const error = chalk.bold.red;
 const attention = chalk.keyword("orange");
 const def = chalk.bold.green;
-const Rx = require("rx");
+//const Rx = require("rx");
 
-const writeFileAsync = promisify(writeFile);
+
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -28,6 +28,20 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const questions = require("./lib/quesitons");
+const IdGen = require('./lib/IdGen');
+
+// Wrap fs.writeFile inside util.promisify
+const writeFileAsync = promisify(writeFile);
+
+var employees = [];
+var start = 1;
+var end = 25;
+var empId = new IdGen(start, end)
+var idArray = empId.getEmpId();
+log(idArray)
+
+idArray.forEach(element => log("id ---------->", element));
+
 
 //const lib = require('./lib')
 //const generateHTML = require('./templates/mnger.html')
@@ -36,12 +50,12 @@ clear();
 
 log(
   chalk.yellow(
-    figlet.textSync("Welcome to Github", { horizontalLayout: "full" })
+    figlet.textSync("New Employees ", { horizontalLayout: "full" })
   )
 );
 log(
   chalk.yellow(
-    figlet.textSync("CLI TEMPLATE ENGINE", { horizontalLayout: "full" })
+    figlet.textSync("Records Keeper", { horizontalLayout: "full" })
   )
 );
 log(
@@ -78,129 +92,295 @@ log("                           ");
 
 let repeat = true;
 
-var employees = [];
-var employee = [];
-var manager = {};
-var managers = [];
-var engineer = {};
-var engineers = [];
-var intern = {};
-var interns = [];
-var html = "";
+
+
+
+
+
 var inputs = {};
 
 var i = 0;
-var n = 0;
+var s = 0;
 var r = 0;
 
-// Asynchronously append data to a file, creating the file if it does not yet exist. 
-//data can be a string or a Buffer.
-
-// fs.appendFile('message.txt', 'data to append', (err) => {
-//   if (err) throw err;
-//   console.log('The "data to append" was appended to file!');
-// });
-// If options is a string, then it specifies the encoding:
-
-// fs.appendFile('message.txt', 'data to append', 'utf8', callback);
-
-async function saveLocalEmployees(employees) {
-  log( "((((((((((((((( I am inside saveLocalEmployees )))))))))))))))))))))))")
+   async function saveLocalEmployees(employees) {
+    log("\n\n\n\n \n\n\n\n");
+  log( "%%%%%%%%%%%%%%%%%%% Entring saveLocalEmployees %%%%%%%%%%%%%%%%%%%%%%%%")
   try {
-    
-    log("n saveLocalEmployees: ", n)
-    log("I am inside saveLocalEmpoyees \n")
-    log("employees ========     \n", employees)
+    log("\n\n\n\n \n\n\n\n");
+    log("employees Array   \n", employees)
 
     const employeesJSON = JSON.stringify(employees);
-
-    log("employeeJSON  ========     \n", employeesJSON)
+    log("\n\n\n\n \n\n\n\n");
+    log("employeesJSON STRING   \n", employeesJSON)
+    
     //fs.writeFileSync(empOutputPath, employeeJSON)
-  
-    await writeFileAsync(empOutputPath + n, employeesJSON);
-    // await fs.appendFile(empOutputPath, employeeJSON, 'utf8', (err) => {
-    //   if(err) throw err;
-    //   log("Error in saveLocalEmployee \n", employeeJSON)
-   //   await fs.appendFile(empOutputPath, employeeJSON, 'utf8')
-      n++;
+    let n = Math.floor(Math.random() * 100);
+     await writeFileAsync(empOutputPath.concat(n) , employeesJSON);
+ 
+    log( "%%%%%%%%%%%%%%%%%%% Done with saveLocalEmployees %%%%%%%%%%%%%%%%%%%%%%%%")
+
   } catch (err) {
-      log(`Error on async function: ${console.error(err)}`);
+      log(`Error on  function: ${console.error(err)}`);
       log(`Error name: ${err.name}`)
       log(`Error message: ${err.message}`)    
   }
 
-
-
 }
 
-async function saveEmployees(employees){
+
+  async function saveEmployees(employees){
   try {
+    log("\n\n\n\n \n\n\n\n");
     log( "((((((((((((((( I am inside saveEmployees )))))))))))))))))))))))")
-  log("employees  ========     \n", employees)
-  //employees.push(employee);
-//  await writeFileAsync(outputPath, render(employees));
-
-  // employees1.forEach(employees => {
-  //   log("For Each employee  ========     \n", employees)
-  //     writeFileAsync(outputPath, render(employees, "utf-8"));
-  //  });
-  for (i=0; i< employees.length; i++) {
-    writeFileAsync(outputPath, render(employees[i], "utf-8"));
-  }
-  log( "***************************** Leaving saveEmployees )))))))))))))))))))))))")
+    log("\n\n\n\n \n\n\n\n");
+    log("employees object:    \n", employees)
+    log("\n\n\n\n \n\n\n\n");
+   
+   // writeFileAsync(outputPath, render(employees, "utf-8"));
     
-} catch (err) {
-  log(`Error on async function: ${console.error(err)}`);
-  log(`Error name: ${err.name}`)
-  log(`Error message: ${err.message}`)    
-}
+    log( "((((((((((((((( Call writeFileSync Loop )))))))))))))))))))))))")
+    for (i=0; i< employees.length; i++) {
+        log("\n\n\n\n \n\n\n\n");
+        log( "((((((((((((((( Call writeFileSync Loop )))))))))))))))))))))))")
+        log("Counter i Value:    \n", i)
+        log("employees object:    \n", employees[i])
+        await writeFileAsync(outputPath, render(employees[i], "utf-8"));
+        log("\n\n\n\n \n\n\n\n");
+    }
+    log( "((((((((((((((( Done with writeFileSync  )))))))))))))))))))))))")
+    
+    
+  } catch (err) {
+    log(`Error on  function: ${console.error(err)}`);
+    log(`Error name: ${err.name}`)
+    log(`Error message: ${err.message}`)    
+  }
   
 }
 
+var idCounter = 0;
+var idSequence = 0;
+ function buildEmpObject(inputs) {
+    log("\n\n\n\n******************** =========== Entring Switch ================= ******************* \n\n\n\n");
+    s++;   
+    log("Counter s:  ", s)
+    log("input inside Switch Manager ", inputs)
+    log("input inside Switch Manager ", inputs.role)
+
+    idCounter = idArray[idSequence];
+    idSequence++
+        
+  try {
+    switch (inputs.role) {
+      case "Manager": {
+        
+        log("\n\n\n\n******************** =========== Entring Manager ================= ******************* \n\n\n\n");
+        log("input inside Switch Manager ", inputs)
+        
+        employee = new Manager(
+          idCounter,
+          inputs.name,
+          inputs.role,
+          inputs.email,
+          inputs.officeNumber
+        );
+        log("\n\n\n\n******************** ========== New instance of Manager created called employee ================== ******************* \n\n\n\n");
+        log("employee instance of Manager inside Switch Manager ", employee)
+        log("\n\n\n\n \n\n\n\n");
+        
+
+        log("*************** employee instance of manager property inside Manager **********************");
+        log("Employee Id: => Manager.getId() ", employee.getId());
+        log("Employee Name: => Manager.name ", employee.getName());
+        log("Employee Role:=> Manager.getRole()", employee.getRole());
+        log("Employee email => Manager.getEmail(): ", employee.getEmail());
+        log("Employee Role:=> Manager.getRole()", employee.getOfficeNumber());
+        log("\n\n\n\n \n\n\n\n");
+        log("employees array before push", employees);
+        employees.push(employee);
+
+        log("\n\n\n\n \n\n\n\n");
+        log("employees array after push push", employees);
+
+        log("\n\n\n\n******************** ============= Done with Manager =============== ******************* \n\n\n\n");
+       
+        break;
+
+      }
+    
+      case "Engineer": {
+        log("\n\n\n\n******************** =========== Entring Engineer ================= ******************* \n\n\n\n");
+        log("input inside Switch Engineer ", inputs)
+        
+        employee = new Engineer(
+          idCounter,
+          inputs.name,
+          inputs.role,
+          inputs.email,
+          inputs.github
+        );
+        log("\n\n\n\n******************** ========== New instance of Engineer created called employee ================== ******************* \n\n\n\n");
+        log("employee instance of Engineer inside Switch Engineer ", employee)
+        log("\n\n\n\n \n\n\n\n");
+          
+  
+          log("*************** employee instance of Engineer property inside Engineer **********************");
+          log("Employee Id: => Engineer.getId() ", employee.getId());
+          log("Employee Name: => Engineer.name ", employee.getName());
+          log("Employee Role:=> Engineer.getRole()", employee.getRole());
+          log("Employee email => Engineer.getEmail(): ", employee.getEmail());
+          log("Employee Role:=> Engineer.getRole()", employee.getGithub());
+          log("\n\n\n\n \n\n\n\n");
+          log("employees array before push", employees);
+          employees.push(employee);
+          log("\n\n\n\n \n\n\n\n");
+          log("employees array after push push", employees);
+        
+          log("\n\n\n\n******************** ============ Done with Engineer ================ ******************* \n\n\n\n");
+        break;
+      }
+      case "Intern": {
+        log("\n\n\n\n******************** =========== Entring Intern ================= ******************* \n\n\n\n");
+        log("input inside Switch Intern ", inputs)
+        
+        employee = new Intern(
+          idCounter,
+          inputs.name,
+          inputs.role,
+          inputs.email,
+          inputs.school
+        );
+        log("\n\n\n\n******************** ========== New instance of Intern created called employee ================== ******************* \n\n\n\n");
+        log("employee instance of Intern inside Switch Intern ", employee)
+        log("\n\n\n\n \n\n\n\n");
+          
+  
+          log("*************** employee instance of Intern property inside Intern **********************");
+          log("Employee Id: => Intern.getId() ", employee.getId());
+          log("Employee Name: => inputs.name ", employee.getName());
+          log("Employee Role:=> Intern.getRole()", employee.getRole());
+          log("Employee email => Intern.getEmail(): ", employee.getEmail());
+          log("Employee Role:=> Intern.getRole()", employee.getSchool());
+          log("\n\n\n\n \n\n\n\n");
+          log("employees array before push", employees);
+          employees.push(employee);
+          log("\n\n\n\n \n\n\n\n");
+          log("employees array after push push", employees);
+        
+          log("\n\n\n\n******************** ============ Done with Intern ================ ******************* \n\n\n\n");
+        break;
+      }
+    }
+  } catch (err) {
+    log(`Error on  function: ${console.error(err)}`);
+    log(`Error name: ${err.name}`);
+    log(`Error message: ${err.message}`);
+  }
+
+  log("employees array before exiting SWITCH :  ", employees)
+  log("\n\n\n\n******************** =========== Done with SWITCH STATEMENT ================= ******************* \n\n\n\n");
+        
+        log("\n\n\n\n\n\n\n\n");
+}
 
 function promptUser() {
   return prompt(questions);
 }
+idArray.forEach(element => log("id ---------->", element));
+const init = async () => {
 
-const main = async () => {
-  do {
-    
-    inputs = await promptUser();
-    log( "((((((((((((((( I am inside do While )))))))))))))))))))))))")
-    log("inputs  \n", inputs);
-    employees.push(inputs)
-   log("Employees inside do while \n", employees)
-    log("--------------");
-    log("Saving record number: ", r);
-    r++;
-    
-    // employees.push(inputs);
-    // log("employees ---> ", employees);
-    repeat = (
-      await inquirer.prompt([
-        {
-          type: "confirm",
-          name: "repeat",
-          message: "Do you want to add another employee?",
-        },
-      ])
-    ).repeat;
-  } while (repeat);
-  log( "***************************** I am done with do While )))))))))))))))))))))))")
+    try {
+        do {  
+            log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+            log( "((((((((((((((( I am inside do While )))))))))))))))))))))))\n\n")
 
- 
-  // const inputs = await promptUser();
-  // saveEmployees(employees);
-  //var output = (JSON.parse(employees))
-  let output = JSON.stringify(inputs, null, "\t");
-  //saveEmployees(inputs)
+            r++;
+            log("\n\n\n\n******************** Starting record number: ", r ,"  ******************* \n\n\n\n");
+
+            let inputs = await promptUser();
+        
+
+            log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+            log("********************inputs  \n\n", inputs);
+            log(" \n\n********************Call buildEmpObject and passing inputs object ******************* \n\n");
+
+            buildEmpObject(inputs)
+            log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+            log(" \n\n******************** Back from buildEmpObject ******************* \n\n");
+            //employees.push(inputs)
+            log("\n\n\n ============ Employees inside do while \n\n", employees)
+            log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+        
+            
+            
+            // employees.push(inputs);
+            // log("employees ---> ", employees);
+            repeat = (
+            await inquirer.prompt([
+                {
+                type: "confirm",
+                name: "repeat",
+                message: "Do you want to add another employee?",
+                },
+            ])
+            ).repeat;
+        } while (repeat);
+    } catch (err) {
+    log(`Error on  function: ${console.error(err)}`);
+    log(`Error name: ${err.name}`);
+    log(`Error message: ${err.message}`);
+    }
+
+  log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+  log( "***************************** I am done with do While Questions)))))))))))))))))))))))")
+  log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+  log("Employees Array: ", employees);
+  log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+  log("$$$$$$$$$$$$$$$$$$$$$$$ call SaveLocalEmployees and passing empoyees object $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
   
-  //log("this is my inputs: --------------------> \n", inputs);
-  //log("this is my otput: --------------------> \n", output);
-  
-  //saveLocalEmployees(employees)
- // saveEmployees(employees)
-  // log("this is my output: -------------------->" , output)
+
+  //saveLocalEmployees(employees);
+
+  log("$$$$$$$$$$$$$$$$$$$$$$$ Done with SaveLocalEmployees \n\n\n");
+  log("$$$$$$$$$$$$$$$$$$$$$$$ call SaveEmployees and passing empoyees object $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+  try {
+    log("\n\n\n\n \n\n\n\n");
+    log( "((((((((((((((( I am inside saveEmployees )))))))))))))))))))))))")
+    log("\n\n\n\n \n\n\n\n");
+    log("employees object:    \n", employees)
+    log("\n\n\n\n \n\n\n\n");
+    
+    log( "((((((((((((((( Call writeFileSync Loop )))))))))))))))))))))))")
+    writeFileAsync(outputPath, render(employees, "utf-8"));
+    
+    // log( "((((((((((((((( Call writeFileSync Loop )))))))))))))))))))))))")
+    // for (i=0; i< employees.length; i++) {
+    //     log("\n\n\n\n \n\n\n\n");
+    //     log( "((((((((((((((( Call writeFileSync Loop )))))))))))))))))))))))")
+    //     log("Counter i Value:    \n", i)
+    //     log("employees object:    \n", employees[i])
+    //     await writeFileAsync(outputPath, render(employees[i], "utf-8"));
+    //     log("\n\n\n\n \n\n\n\n");
+    // }
+    log( "((((((((((((((( Done with writeFileSync  )))))))))))))))))))))))")
+    
+    
+  } catch (err) {
+    log(`Error on  function: ${console.error(err)}`);
+    log(`Error name: ${err.name}`)
+    log(`Error message: ${err.message}`)    
+  }
+
+
+  //saveEmployees(employees);
+
+  log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+  log("$$$$$$$$$$$$$$$$$$$$$$$ Done with SaveEmployees $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+  log("\n\n\n\n******************** ============================ ******************* \n\n\n\n");
+
+
+
   log("                           ");
   log("                           ");
   log("                           ");
@@ -216,160 +396,26 @@ const main = async () => {
   log("                           ");
   log("                           ");
 
-  //debugger
-
-  //log("this is my inputs2: -------------------->\n", inputs);
-
-
-          log(inputs.id,
-          inputs.name,
-          inputs.role,
-          inputs.email,
-          inputs.github)
-
-try {
-  switch (inputs.role) {
-    case "Manger": {
-      manager = new Manager(
-        inputs.id,
-        inputs.name,
-        inputs.role,
-        inputs.email,
-        inputs.officeNumber
-      );
-      log("Manager object :=> Manager \n", Manager);
-
-      log("*************** inside Manager **********************");
-      log("Employee Id: => Manager.getId() ", manager.getId());
-      log("Employee Name: => inputs.name ", manager.getName());
-      log("Employee Role:=> Manager.getRole()", manager.getRole());
-      log("Employee email => Manager.getEmail(): ", manager.getEmail());
-      log("Employee Role:=> Manager.getRole()", manager.officeNumber());
-      log("my Employees => emplyees", manager);
-      employees.push(manager);
-
-     // saveLocalEmployees(emplyees)
-    // saveEmployees(employees);
-      log("my Employees => manager \n", manager);
-      log("my Employees => managers \n", managers);
-      break;
-    }
-   
-    case "Engineer": {
-      log( "((((((((((((((( I am inside Engineer )))))))))))))))))))))))")
-        employee = new Engineer(
-          inputs.id,
-          inputs.name,
-          inputs.role,
-          inputs.email,
-          inputs.github
-        );
-        log("*************** inside Engineer **********************");
-        log("Employee => Engineer \n", employee);
-        log("Employee Id: => employee.getId() ", employee.getId());
-        log("Employee Name: => employee.getName() ", employee.getName());
-        log("Employee role => employee.getRole(): ", employee.getRole());
-        log("Employee email => employee.getEmail(): ", employee.getEmail());
-        log("Employee gitHub => employee.getGitHub(): ", employee.getGithub());
-        //employees.push(employee);
-        log("Counter in Engineer: ", i)
-       // log("Employee => Engineer =================> \n", employees);
-        // saveLocalEmployees(employees)
-       //  saveEmployees(employees[0]);
-         log("Employee => Engineer =================> \n", employees);
-         saveLocalEmployees(employees)
-         saveEmployees(employees);
- 
-         log("my Employees => emplyees *******************", employees);
-
-        log("my Employees => emplyees------------------>>>>>", employees[0]);
-      
-
-      break;
-    }
-    case "Intern": {
-    //  try {
-        intern = new Intern(
-          inputs.id,
-          inputs.name,
-          inputs.role,
-          inputs.email,
-          inputs.school
-        );
-        log("*************** inside Intern **********************");
-        log("Employee => Intern ", intern);
-        log("Employee Id: => intern.getId() ", intern.getId());
-        log("Employee Name: => intern.getName() ", intern.getName());
-        log("Employee role => intern.getRole(): ", intern.getRole());
-        log("Employee email => intern.getEmail(): ", intern.getEmail());
-        log("Employee gitHub => intern.getGitHub(): ", intern.school());
-        employees.push(intern);
-        saveEmployees(intern);
-        log("my Employees => emplyees", employees);
-   
-
-      break;
-    }
-    // default: {
-    //   log("Error in Switch statment");
-    //   break;
-    // }
-  }
-} catch (err) {
-  log(`Error on async function: ${console.error(err)}`);
-  log(`Error name: ${err.name}`);
-  log(`Error message: ${err.message}`);
-}
-
-   // saveLocalEmployees(employees)
-    //saveEmployees(employees);
-
-  // await writeFileAsync(outputPath, render(employees), "utf-8");
-
-  // fs.writeFileSync(outputPath, render(employees), "utf-8");
+  
   log(chalk.green("Successfully built your html page"));
 };
-main();
+init();
 
-//  } catch (error) {
-//       log(`Error on async function: ${console.error(err)}`);
-//       log(`Error name: ${err.name}`)
-//       log(`Error message: ${err.message}`)
+// function isValidJSON(text) {
+//     try {
+//       JSON.parse(text);
+//       return true;
+//     } catch {
+//       return false;
 //     }
+//   }
 
-// } catch (err) {
-//   log(`Error on async function: ${console.error(err)}`);
-//   log(`Error name: ${err.name}`)
-//   log(`Error message: ${err.message}`)
-// }
-
-// 	//const html = render(answers);
-
-//fs.writeFileSync(outputPath, render(employees), "utf-8")
-
-// init();
-
-//https://old.janabeck.com/blog/2017/02/05/infinite-interactivity-with-inquirer
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+// try {
+//     try_statements
+//   }
+//   [catch [(exception_var)] {
+//     catch_statements
+//   }]
+//   [finally {
+//     finally_statements
+//   }]
