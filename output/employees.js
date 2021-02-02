@@ -1,0 +1,1 @@
+[{"id":1,"name":"Ali Alaoui","role":"Engineer","email":"ali.alaoui@gmail.com","github":"mygithub"},{"id":2,"name":"Ali Alaoui","role":"Manager","email":"ali.alaoui@gmail.com","officeNumber":5},{"id":3,"name":"Ali Alaoui","role":"Intern","email":"ali.alaoui@gmail.com","school":"GW University"}]

@@ -98,7 +98,7 @@ The next thing we need to do is create a function that will prompt the user for 
 Require steps We can use Inquirer for this. The module includes a number of methods for various types of prompts, which are roughly analogous to HTML form controls. In order to collect the user’s GitHub username and password, we’re going to use the input and password types respectively.
 
 ### Prerequisites
-None
+Nodejs, jest, inquirer
 
 ## Technologies 
 ```
@@ -109,7 +109,7 @@ Nodejs, javascript, inquirer, chalk, figlet, clear
 Download or clone the project.
 
 From root directory of the project run $ npm install
-once all dependencies are installed run $ node index.js
+once all dependencies are installed run $ node app.js
 ## Usage 
 ```
 How to use the project - We can use Inquirer for this. The module includes a number of methods for various types of prompts, which are roughly analogous to HTML form controls. In order to collect the user’s GitHub username and password, we’re going to use the input and password types respectively.
@@ -117,9 +117,23 @@ How to use the project - We can use Inquirer for this. The module includes a num
 
 ## How to test
 ```
-how to test the project - Require steps We can use Inquirer for this. The module includes a number of methods for various types of prompts, which are roughly analogous to HTML form controls. In order to collect the user’s GitHub username and password, we’re going to use the input and password types respectively. 
+on root directory run the following command: $npm test
+if the test was successful jest will diplay the test report for code coverage (see picture below)
 ```
+<img src="./img/test-1.JPG">
 
+```
+And if you are a visual person you can review the test report for code coverage on the browser. There is a folder called coverage, inside this folder a file called index.html. Just open index.html and you will see test report for code coverage. (see example below)  
+```
+<img src="./img/test-2.JPG">
+
+```
+```
+<img src="./img/test-3.JPG">
+
+```
+```
+<img src="./img/test-4.JPG">
 <!-- LICENSE -->
 ## License
 This project is [MIT](https://choosealicense.com/licenses/MIT/) licensed.<br />
