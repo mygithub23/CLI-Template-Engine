@@ -89,11 +89,6 @@ log("                           ");
 
 let repeat = true;
 
-
-
-
-
-
 var inputs = {};
 
 var i = 0;
@@ -122,7 +117,6 @@ function buildEmpObject(inputs) {
     s++;
     idCounter = idArray[idSequence];
     idSequence++
-
     try {
         switch (inputs.role) {
             case "Manager":
@@ -197,6 +191,9 @@ const init = async() => {
     }
 
     try {
+        // log("\n\n\n\n \n\n\n\n");
+        // log("employees object:    \n", employees)
+        // log("\n\n\n\n \n\n\n\n");
         saveLocalEmployees(employees);
         writeFileAsync(outputPath, render(employees, "utf-8"));
 

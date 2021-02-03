@@ -83,11 +83,6 @@ body {
     color: white;
 }
 
-.col {
-    margin-top: 20;
-    margin-bottom: 20;
-}
-
 
 /* .btn-primary {
   position: relative;
@@ -123,8 +118,4 @@ a:hover {
 .btn-primary {
     text-align: left;
     border: 2px solid white;
-}
-
-.col {
-    margin: 20px;
 }
